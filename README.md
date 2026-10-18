@@ -181,43 +181,82 @@ before deciding anything. Distinctions that actually showed up in the text:
    learning baseball rules from sports games as a kid. They're concrete, but
    most aren't arguing for anything.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** All 230 rows were **pre-labeled by Claude**, and then
+**I checked rows 1–158 myself** and agreed with every one of those labels.
+Rows 159–230 were not hand-checked. The `note` column says which is which
+(`pre-labeled by Claude, checked by me (agreed)` or `pre-labeled by Claude,
+not hand-checked`). No row is marked `cold`, because I reviewed labels that
+were already filled in rather than labeling blind.
+
+From the 1,084 collected comments, 230 were drawn evenly across the 16
+threads and across short (<120 characters), medium and long (>350) comments,
+after removing exact duplicates, deleted comments, AutoModerator, and comments
+that were only a quote or only a link. Claude read each one in full and applied
+the definitions and decision rule above, in four batches of about 58. 19 posts
+made it hesitate, and those are marked `hard:` in the note with the reason.
+Posts are kept whole (the notebook truncates long ones to 128 tokens, not me).
+The file is one unsplit CSV; the notebook does the 70/15/15 split.
+
+Because I checked pre-filled labels rather than labeling blind, there's no
+cold baseline in this dataset. Agreeing with labels I can see is a weaker check
+than labeling from scratch. The unit 6 agreement check (`agreement.py`,
+criterion 4) will be my first blind labeling against a written rule.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `bare_take` | 103 | 44.8% |
+| `backed` | 75 | 32.6% |
+| `reaction` | 52 | 22.6% |
+| **Total** | 230 | 100% |
+
+No label is near the 70% cap. `bare_take` is the biggest, as the reading
+predicted. `reaction` came out at 22.6%, a little above the ~20% I assumed when
+writing criterion 2.
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
+> *The post:* "Bobby Kotick who was best mates with Epstein and Maxwell? That Bobby Kotick?"
 >
-> *Could have been:*
+> *Could have been:* `reaction` (it reads as a sarcastic jab) or `backed`.
 >
-> *I chose, because:*
+> *I chose, because:* **`backed`**. The jab rests entirely on a stated factual
+> claim that anyone could look up (that Kotick was close to Epstein and
+> Maxwell), and that claim is the whole case against him. Whether it's true
+> isn't the label's job; it's checkable. My rule says tone never
+> decides, so a sarcastic comment with a checkable fact as its evidence is
+> still `backed`.
 
 **2.**
-> *The post:*
+> *The post:* "“Even with the size of the team that we had for Starfield, it wasn’t big enough to create the amount of content that the grand idea of the game really required,” he explained. “Like, we needed way more.” — I really dont think this was the games problem. Yes it needed more "points of interest" generated on a planet. But the fundamental structure was screwed up. They should have made a handful of large handcrafted maps…"
 >
-> *Could have been:*
+> *Could have been:* `backed` (it contains a direct quote, which my
+> definition lists as a checkable fact) or `bare_take`.
 >
-> *I chose, because:*
+> *I chose, because:* **`bare_take`**. The quote is the *topic*, what the
+> poster is disagreeing with, not evidence for their own point. Their own
+> argument ("the fundamental structure was screwed up") has no checkable
+> support. This is the "a number that's the topic, not the support" exception,
+> applied to a quote.
 
 **3.**
-> *The post:*
+> *The post:* "I've always spent over $1500 CAD for my gaming laptops anyway. Done it three times. And I accept I may have to spend over $2000 the next time (2027-28 latest). But consoles on top (exclusives, connection to living room TV, etc) can screw off…"
 >
-> *Could have been:*
+> *Could have been:* `backed` (dollar amounts and dates) or `reaction`.
 >
-> *I chose, because:*
+> *I chose, because:* **`reaction`**. The numbers are about the poster's own
+> purchases, and they don't support any claim about a game, company or the
+> industry. Strip out the personal story and what's left is "consoles can screw
+> off", a feeling rather than an argued claim. This is the case most likely to
+> confuse the model, because it *looks* like a `backed` post: digits, dollar
+> signs, years.
+
+The other 16 hard cases are in `labels.csv` (search the `note` column for
+`hard:`). Most of them sit on the same two lines: a fact delivered with
+sarcasm (Halo's string of botched releases, #164), and games or people named
+without a fact about them (The Witcher 3, Blizzard North).
 
 ---
 
