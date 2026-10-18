@@ -91,7 +91,40 @@
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** Public comments from
+[r/Games](https://www.reddit.com/r/Games/), a general video-game news and
+discussion subreddit, not tied to one game or release. I collected 1,084
+comments from 16 threads: the top threads of the past week and month plus the
+current hot list, each with at least 60 comments. The topics were GTA VI's
+trailer and PC date, Starfield 2, the Forza Horizon 6 ban wave, NBA 2K25 being
+delisted, ARC Raiders going PvE, the RTX 5090, and others. Comments were read
+with [rdt-cli](https://github.com/jackwener/rdt-cli), the Reddit backend the
+[Agent Reach](https://github.com/Panniantong/Agent-Reach) project uses, logged
+in as my own account and read-only, with a few seconds between requests.
+Reddit blocks anonymous scripted requests, which is why a logged-in tool was
+needed.
+
+**Notes from reading (Milestone 1).** I read 40 randomly sampled comments
+before deciding anything. Distinctions that actually showed up in the text:
+
+1. **Some back their point with something you could go and check.** "There
+   was a leak probably 4 months ago suggesting a February 2027 launch for
+   PC… My question is whether they mean fiscal Q1 or calendar Q1." / "Just go
+   to mobygames and start going through the credits, most of the staff with
+   'lead' on their title are still there." / A list of the specific games
+   Debra Wilson's characters were modelled on (Jedi Survivor, Suicide Squad,
+   Forspoken, Death Stranding 2).
+2. **Many state a verdict with nothing behind it.** "Starfield has the most
+   boring Sci-Fi setting in fiction to date." / "This is a preview of things to
+   come whenever Sony foolishly decides to release the PS6 before the end of
+   the decade." / "Nothing new, absolutely unacceptable."
+3. **Many are pure feeling, a joke or a jab, with no claim to argue.** "Looks
+   like it won't be getting the @CanYouDismemberTheDog endorsement" / "Meanwhile,
+   I want a Subaru with Subaru on it" / "it is really an accomplishment how so
+   many whiny obnoxious people managed to find the same subreddit together".
+4. **Some are personal stories**, like a magical moment in the WoW beta, or
+   learning baseball rules from sports games as a kid. They're concrete, but
+   most aren't arguing for anything.
 
 **How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
 Say so plainly — the disclosure is required, not penalised. -->
