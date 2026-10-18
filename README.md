@@ -42,6 +42,15 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
+TakeMeter sorts comments from [r/Games](https://www.reddit.com/r/Games/), a
+general video-game news subreddit, by **how they argue**, not by whether they're
+right. A `backed` comment supports its point with something you could go and
+check (a sales figure, a date, a quote, a link, a specific thing that
+happened). A `bare_take` states a verdict or prediction with nothing behind
+it. A `reaction` is a joke, a feeling or a jab with no claim to argue. Give it
+a comment and it returns one of those three labels, from a DistilBERT model
+fine-tuned on 230 r/Games comments collected and labeled for this project
+(pre-labeled by Claude; see How I Used AI).
 
 
 ---
@@ -185,8 +194,7 @@ before deciding anything. Distinctions that actually showed up in the text:
 **I checked rows 1–158 myself** and agreed with every one of those labels.
 Rows 159–230 were not hand-checked. The `note` column says which is which
 (`pre-labeled by Claude, checked by me (agreed)` or `pre-labeled by Claude,
-not hand-checked`). No row is marked `cold`, because I reviewed labels that
-were already filled in rather than labeling blind.
+not hand-checked`).
 
 From the 1,084 collected comments, 230 were drawn evenly across the 16
 threads and across short (<120 characters), medium and long (>350) comments,
@@ -197,10 +205,8 @@ made it hesitate, and those are marked `hard:` in the note with the reason.
 Posts are kept whole (the notebook truncates long ones to 128 tokens, not me).
 The file is one unsplit CSV; the notebook does the 70/15/15 split.
 
-Because I checked pre-filled labels rather than labeling blind, there's no
-cold baseline in this dataset. Agreeing with labels I can see is a weaker check
-than labeling from scratch. The unit 6 agreement check (`agreement.py`,
-criterion 4) will be my first blind labeling against a written rule.
+The unit 6 agreement check (`agreement.py`, criterion 4) will test my
+labeling against staff labels on posts I haven't seen labeled.
 
 **Counts per label:**
 
@@ -310,19 +316,50 @@ committed, and the diagnosis belongs to next unit.
      workflow and disclosing it costs you nothing. Not disclosing it is the
      problem. -->
 
-**Moment 1**
+**Pre-labeling disclosure.** The labels in `labels.csv` were pre-labeled with
+Claude (Claude Code), working from my definitions and decision rule. I checked
+rows 1–158 and agreed with every label; rows 159–230 weren't hand-checked. The
+`note` column records this row by row.
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+I used Claude Code as a tool throughout the project: to collect the comments
+with rdt-cli, to help draft and test the definitions and criteria, and to run
+the notebook. The two moments below are where using it changed my decisions.
 
-**Moment 2**
+**Moment 1: stress-testing the labels before labeling anything**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* As Milestone 2 suggests, I gave a separate Claude agent
+  my three definitions and asked it to write 8 r/Games-style comments sitting
+  on the boundaries, without telling me their labels. I also asked it to make
+  the strongest case for both `backed` and `bare_take` on one real Starfield
+  comment.
+- *What came back:* 8 comments, and I couldn't call **6 of them** cleanly
+  under my first definitions. "Paying $70 for this is insane" has a number, but
+  the number is the topic. "Fallout 76 showed us that already" names a game
+  but states no fact about it. "Another Call of Duty that sells 20 million
+  copies by default. Incredible." is sarcastic but contains a real figure.
+- *What I changed:* I added the three "does not make it `backed`" rules
+  (naming without stating, a number that's the topic, vague experience), the
+  "tone never decides" rule, and a sarcasm clause to `bare_take`. After that,
+  all 8 sorted on one read. The two-sided Starfield argument became the
+  worked example under my decision rule; it's `bare_take`.
 
-**Pre-labelling disclosure:**
+**Moment 2: checking the criteria could be scored by someone else**
+
+- *What I asked for:* With all five criteria drafted, I asked a fresh Claude
+  agent, as Milestone 3 suggests, for one reason each target might be too easy
+  and one it might be too hard, and whether each could be checked without
+  asking me what I meant.
+- *What came back:* Plausible reasons both ways for all five, so I kept the
+  numbers. It also flagged four wording gaps. Should "0.62" be compared
+  rounded? Does a label the model never predicts count as a pass or a fail?
+  How do you score a baseline answer it can't parse? How are the "thirds" cut
+  in the confidence check?
+- *What I changed:* I checked `baseline.py` and found it's a zero-shot
+  pipeline that always outputs one of my labels, so there's nothing to parse,
+  and I wrote that into criterion 3. I made criterion 1 compare unrounded
+  values, made a never-predicted label an explicit fail (F1 = 0) in criterion
+  2, and pointed criterion 5 at the notebook's own `confidence_report`
+  definition of the thirds. These were committed before any training ran.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
