@@ -264,17 +264,40 @@ without a fact about them (The Witcher 3, Blizzard North).
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`, the notebook's default, fine-tuned
+for 3-way classification.
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, max length 128
+tokens, seed 42. Labels in the notebook: `LABELS = ["backed", "bare_take",
+"reaction"]`.
 
-**Anything I changed from the defaults, and why:**
+**Anything I changed from the defaults, and why:** Nothing. The only edits to
+the notebook were `NAME`/`EMAIL` and the `LABELS` list. With 230 examples and no
+results to react to yet, I had no evidence that any setting needed changing.
+128 tokens covers most of these comments; the longest ones (up to 1,000
+characters) get cut off near the end, which I'll keep in mind next unit.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
+**Where it ran:** `mps`, the Apple Silicon GPU on my Mac (PyTorch 2.14.1), as
+recorded in `results.json`.
 
+**Split sizes:** train 160 · val 35 · test 35 (the notebook's stratified
+70/15/15 split).
 
+| Label | Train | Val | Test |
+|---|---|---|---|
+| `backed` | 53 | 11 | 11 |
+| `bare_take` | 71 | 16 | 16 |
+| `reaction` | 36 | 8 | 8 |
+
+Every label has at least 8 in the test split, but `reaction` is right at that
+edge. With 8 test posts, one prediction moves its F1 a lot, so expect that
+label to be the jumpiest across seeds next unit (criterion 2).
+
+**First look (not analysed yet; that's unit 6):** section 5 wrote
+`results.json` and `test_split.csv`. On seed 42 the model predicted `bare_take`
+for 34 of the 35 test posts: accuracy 0.486, macro F1 0.269, `reaction` F1
+0.000. I'm recording that, not tuning for it. My criteria are already
+committed, and the diagnosis belongs to next unit.
 
 ---
 
