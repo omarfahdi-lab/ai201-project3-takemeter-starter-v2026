@@ -1,10 +1,8 @@
 # Your label definitions, one per line, as `label: definition`.
 #
-# Copy these from your README so the baseline is judged on exactly the
-# definitions you wrote. baseline.py reads this file.
-#
-# Delete the examples below and put yours in.
+# Copied from the README so the baseline is judged on exactly the definitions
+# I wrote. baseline.py reads this file.
 
-analysis: makes an argument backed by a specific, checkable fact
-hot_take: a confident claim with no support offered
-reaction: an immediate response to something that just happened
+backed: makes a claim and supports it with at least one stated fact a reader could check, such as a number, date, price, sales figure, quote, link, or a specific thing that happened, offered as evidence rather than as the topic
+bare_take: states an opinion, verdict or prediction as if it were true, with no checkable fact offered in support, including sarcasm whose point is a clear verdict
+reaction: expresses a feeling, a joke, or a jab without asserting any claim about a game, company or the industry that someone could argue against

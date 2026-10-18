@@ -54,35 +54,90 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+Three labels, about how a comment argues rather than whether it's "good".
 
-**Definition:**
+### `backed`
 
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** Makes a claim and supports it with at least one stated fact a
+reader could check (a number, date, price, sales figure, quote, link, or a
+specific thing that happened), offered as evidence rather than as the topic.
 
 **Example 1:**
->
+> This gets repeated all the time, but most of people who had any say in how the game actually shaped out is still there. Even John Gonzalez is back. Just go to mobygames and start going through the credits, most of the staff with "lead" on their title are still there.
 
 **Example 2:**
+> This isn't the first time it's been said though. There was a leak probably 4 months ago suggesting a February 2027 launch for PC that didn't get much traction. My question is whether they mean fiscal Q1 or calendar Q1. If it's calendar Q1 then it lines up because the leak suggested take two wanted the PC launch before the end of their fiscal year.
+
+### `bare_take`
+
+**Definition:** States an opinion, verdict or prediction as if it were true,
+with no checkable fact offered in support. This includes sarcasm whose point is
+a clear verdict.
+
+**Example 1:**
+> There is nothing worth exploring. Starfield has the most boring Sci-Fi setting in fiction to date. It is the epilogue of a setting where everything is irrelevant and the interesting events already happened. You just go around a santized, corporate setting with nothing noteworthy about it.
 >
+> What is the point of writing more quests or adding more hand-made exploration in such a crap setting?
+
+**Example 2:**
+> This is a preview of things to come whenever Sony foolishly decides to release the PS6 before the end of the decade.
+
+### `reaction`
+
+**Definition:** Expresses a feeling, a joke or a jab without asserting any
+claim about a game, company or the industry that someone could argue against.
+
+**Example 1:**
+> Looks like it won't be getting the @CanYouDismemberTheDog endorsement
+
+**Example 2:**
+> Meanwhile, I want a Subaru with Subaru on it
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `backed` vs `bare_take`.
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+**The decision rule I used every time:** Ask: *does the comment state a fact
+someone could look up or verify, and use it as evidence for its point?* If
+yes, it's `backed`, whatever the tone, even sarcastic or angry. If no, it's
+`bare_take`. Three things that do **not** make a comment `backed`:
+- **Naming a game, person or event without saying what happened.** "Fallout
+  76 showed us that already" names evidence but doesn't state it.
+- **A number that's the topic, not the support.** "Paying $70 for this is
+  insane" judges the price; the $70 isn't evidence for anything.
+- **The poster's own vague experience or a sweeping generalisation.** "after
+  1000s of hours", "every live-service game this year flopped".
 
+A specific first-hand observation does count ("the frame rate dropped under 30
+in the first town"), because someone else could check it.
 
+**The borderline post that forced this rule:**
+> Think what really killed starfield more than anything was lack of meaningful exploration. I mean I can go explore fallout or Skyrim right now and potentially find something I havent found before even after 1000s of hours. Starfield you're more than likely just going to find the same poi that you found on the previous planet and the one before that and the one before that.
+
+I asked a separate Claude agent to make the strongest case for each label. The
+case for `backed`: it names Fallout and Skyrim as a comparison and makes a
+claim you could test by landing on two planets. The case for `bare_take`:
+"killed" is never shown, "1000s of hours" is unmeasurable, and with the game
+names removed it's "Starfield's exploration is repetitive", which is opinion.
+Under the rule it's **`bare_take`**. The games are named as a comparison, not
+as stated facts, and the only number is the poster's own vague experience.
+
+**The second boundary,** `bare_take` vs `reaction`: if you strip out the
+joke or the feeling and an arguable claim about a game, company or the industry
+is left, it's `bare_take`. If nothing arguable is left, it's `reaction`.
+"Lmao Ubisoft announcing another open-world game with a map full of icons.
+Shocking." leaves "Ubisoft keeps making the same game", so it's `bare_take`.
+
+**Stress test.** Before labeling anything, I had a Claude agent write 8
+comments sitting on these boundaries without telling me their labels. Under my
+first definitions I couldn't call 6 of the 8 cleanly. The problems were sarcasm
+with a number in it, games named as "evidence", and a price that was the topic.
+That's where the three "does not count" lines and the sarcasm clause came
+from. With them, all 8 sort in one read: #1, #2, #3, #4, #5 and #8 are
+`bare_take`, and #6 ("sells 20 million copies by default. Incredible.") and #7
+(the frame-rate drop) are `backed`. None of the eight ended up `reaction`.
+That's a hint that `reaction` will be my thinnest label, so I need to watch it
+in the counts.
 
 ---
 
