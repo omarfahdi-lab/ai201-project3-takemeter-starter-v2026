@@ -361,6 +361,37 @@ the notebook. The two moments below are where using it changed my decisions.
   2, and pointed criterion 5 at the notebook's own `confidence_report`
   definition of the thirds. These were committed before any training ran.
 
+**Unit 6.** As in unit 5, I used Claude Code as a tool to run the commands:
+`baseline.py` (with and without my definitions, and on the seed 7 and 2024
+splits) and notebook sections 6 and 7, before and after. I had it skip the
+single-seed section 5 so my committed `results.json` and `test_split.csv`
+stayed as they were. It also helped me draft the write-up from the result
+files, and I read and edited every section. I wrote my prediction down before
+any baseline number existed. The decisions were mine: the prediction, the
+labels on the staff set, the improvement, and the verdicts.
+
+**Pre-labeling disclosure (staff set).** Claude pre-labeled the 30 posts in
+`my_staff_labels.csv` under `data/staff_taxonomy.md`, before either of us had
+seen any staff label. I then read all 30 against the staff rules myself and
+agreed with every label. The ones I looked at hardest were
+sp_014 (rule 1: the 3% is decoration), the four posts built on the writer's
+own numbers (sp_002, 005, 007, 010), and sp_021.
+
+**Moment 3: picking the one improvement**
+
+- *What I asked for:* I gave Claude the unit brief and had it work through
+  the milestones. After the before run, it read the training logs to work out
+  which of the milestone's suggested fixes the evidence pointed at.
+- *What came back:* The before-run training loss ended at 1.01–1.04, barely
+  under the ln 3 ≈ 1.10 of a model that knows nothing, after only 30
+  optimizer steps. It also pointed out that criteria 3 and 5 were technically
+  met by a model guessing `bare_take` for almost everything.
+- *What I changed:* Two of the milestone's three suggested fixes are
+  relabeling and more data, but neither would show up in a model that hasn't
+  fit its own training set. So epochs (3 → 10) became my one change, with the
+  value fixed before running it. I also wrote the "met by a one-label model" caveat into my
+  verdicts for 3 and 5 instead of counting them as wins.
+
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.
@@ -373,22 +404,53 @@ the notebook. The two moments below are where using it changed my decisions.
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
+Both columns are scored on the same 35 posts in `test_split.csv` (seed 42).
+Baseline is `facebook/bart-large-mnli` zero-shot, given my definitions from
+`label_definitions.txt`. Trained is the unit 5 model from `results.json`.
+
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.343 | 0.486 | +0.143 |
+| Macro F1 | 0.206 | 0.269 | +0.063 |
+| F1 — `backed` | 0.500 | 0.167 | -0.333 |
+| F1 — `bare_take` | 0.118 | 0.640 | +0.522 |
+| F1 — `reaction` | 0.000 | 0.000 | +0.000 |
+
+**What my definitions were worth.** I also ran the baseline with bare label
+names (`baseline_results_bare_names.json`): accuracy 0.286, macro F1 0.273. The
+definitions bought +0.057 accuracy but cost 0.067 macro F1. With definitions,
+the zero-shot model called 33 of 35 posts `backed`. My `backed` definition is
+the longest and most specific sentence, and "makes a claim and supports it"
+seems to be something almost any argumentative comment entails. The table
+above uses the definitions run as the baseline.
+
+The baseline was also scored on the seed 7 and seed 2024 test splits, for the
+criterion 3 column of the run log: 0.314 accuracy on both.
 
 **What I predicted before I looked:**
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
      prediction made afterwards isn't one. -->
 
+Written before running `baseline.py`: the trained model will beat the baseline
+only on `bare_take` F1, because it learned to guess `bare_take`; the baseline
+will win on `reaction` and `backed`, since those are describable in words.
+
 **What the gap actually means:**
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
 
-
+The prediction was half right. The trained model won only on `bare_take`
+(+0.522) and the baseline won on `backed` (+0.333), as predicted. But the
+baseline did not win on `reaction`: both models scored 0 there. The gap is not
+evidence that the trained model learned my taxonomy. Both models collapsed
+onto a single label, the trained one onto `bare_take` and the baseline onto
+`backed`, and the trained model's +0.143 is simply the difference between
+those two labels' shares of the test split (16/35 vs 11/35, plus one post).
+A constant "always `bare_take`" guesser would score 0.457 and beat the
+baseline by the same margin. The baseline is also far slower at runtime: it
+loads a 1.6 GB model and scores every post against three hypotheses, while the
+trained model scores a whole 35-post split in about 0.05 s (the notebook's
+`eval_runtime`).
 
 ---
 
@@ -397,31 +459,48 @@ the notebook. The two moments below are where using it changed my decisions.
 <!-- Five criteria across three seeds. The notebook's section 6 prints the
      spread table; the Target and Verdict columns are yours. -->
 
+**Device:** `mps` (Apple Silicon GPU, PyTorch 2.14.1), all three seeds, as
+recorded in `results_three_seeds_before.json`. Settings unchanged from unit 5:
+3 epochs, lr 2e-5, batch 16, max length 128. 35 test posts per seed (11
+`backed`, 16 `bare_take`, 8 `reaction`).
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.62 in every seed | 0.486 | 0.486 | 0.457 | MISSED |
+| 2. Lowest per-label F1 | ≥ 0.45 in every seed | 0.000 (`reaction`) | 0.000 (`reaction`) | 0.000 (`backed`, `reaction`) | MISSED |
+| 3. Trained − baseline accuracy | ≥ +0.10 (seed 42) | +0.143 (0.486 − 0.343) | +0.171 (0.486 − 0.314) | +0.143 (0.457 − 0.314) | MET |
+| 4. Agreement with staff set | ≥ 21/30 (0.70) | 30/30 (1.00) | — one labeling, not per seed | — | MET |
+| 5. Most-sure − least-sure third accuracy | ≥ 0.15 in every seed | +0.545 (0.727 − 0.182) | +0.273 (0.727 − 0.455) | +0.364 (0.818 − 0.455) | MET |
+
+The full spread, from section 6:
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.486 | 0.486 | 0.457 | 0.029 |
+| Macro F1 | 0.269 | 0.269 | 0.209 | 0.060 |
+| F1 — `backed` | 0.167 | 0.167 | 0.000 | 0.167 |
+| F1 — `bare_take` | 0.640 | 0.640 | 0.627 | 0.013 |
+| F1 — `reaction` | 0.000 | 0.000 | 0.000 | 0.000 |
+
+Accuracy moved only 0.029 across seeds, but it's stable for a bad reason: the
+model gives nearly the same answer to every post on every split.
 
 ### Confusion matrix
 
-<!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
-     An image of a matrix earns nothing. -->
+Seed 42 (section 7 prints the first seed's; seed 7 is identical, and seed
+2024 differs only in that its one `backed` hit also became `bare_take`):
 
-| true \ predicted |  |  |  |
+| true \ predicted | backed | bare_take | reaction |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **backed** | 1 | 10 | 0 |
+| **bare_take** | 0 | 16 | 0 |
+| **reaction** | 0 | 8 | 0 |
 
-**My biggest off-diagonal number, and what it means:**
-<!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
-     direction. "7 real analysis posts were called hot_take and only 3 went the
-     other way" is a direction, not just an error rate. -->
-
-
+**My biggest off-diagonal number, and what it means:** 10 real `backed` posts
+were called `bare_take` and 0 went the other way. But the `reaction` row is
+just as one-sided (8 of 8 to `bare_take`), so this isn't one boundary the model
+failed to learn. It never learned any boundary, and it puts 34 of 35 posts in
+the majority label.
 
 ---
 
@@ -430,13 +509,16 @@ the notebook. The two moments below are where using it changed my decisions.
 <!-- MET or MISSED against LAST UNIT's target. The target has to hold across
      all three seeds, not turn up sometimes. -->
 
+Verdicts are on the **before** run (the unit 5 settings). The after run has
+its own verdicts under The Improvement.
+
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.62 in all three seeds | MISSED | 0.486 / 0.486 / 0.457. No seed is within 0.13 of the target. |
+| 2 | No label F1 below 0.45 | all 9 per-label F1s ≥ 0.45 | MISSED | 6 of the 9 are below 0.45 (`backed` 0.167 / 0.167 / 0.000). `reaction` is 0 in every seed because it's never predicted, which the criterion counts as a fail. Only `bare_take` clears it. |
+| 3 | Beats zero-shot baseline | trained − baseline ≥ 0.10 on seed 42 | MET | +0.143 on seed 42, which is what the criterion names. It also holds on seeds 7 and 2024 (+0.171, +0.143). It's met by the letter of the criterion. But a constant `bare_take` guess would also pass, so this criterion as written doesn't separate "learned something" from "picked the majority label" (see Baseline vs. Trained). |
+| 4 | Agreement with staff | ≥ 21 of 30 | MET | `agreement.py` reports 30 of 30 (1.00), well above 21. It doesn't depend on the seed, so one number covers all three columns. The target turned out too loose for this set (see Agreement Report). |
+| 5 | Confidence separates right from wrong | most-sure − least-sure ≥ 0.15 in all three seeds | MET | +0.545 / +0.273 / +0.364, all at least 0.15. Same caveat as 3: with a one-label model, this measures which *posts* it's surest are `bare_take`, and the most-sure third is mostly real `bare_take` posts. Mean confidence when right is only 0.44 to 0.46, barely above the 0.33 of a uniform guess. |
 
 **Diagnoses**
 
@@ -449,7 +531,39 @@ the notebook. The two moments below are where using it changed my decisions.
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
+**Criterion 1 (accuracy) and criterion 2 (per-label F1) have one cause: the
+model never got far enough from its starting point to learn any boundary.
+That's a training problem, not a data problem.** How I know:
 
+- **The matrix.** 34 of 35 posts go to `bare_take` on seeds 42 and 7, and all
+  35 on seed 2024. `bare_take` recall is 1.0 in every seed and `reaction` is
+  never predicted at all. That's the signature of a model sitting on the
+  majority label (45% of my data), not of one boundary being confused.
+- **The training loss.** It ended at 1.01, 1.02 and 1.04 across the three
+  seeds. A model that knows nothing and guesses evenly over three labels has a
+  loss of ln 3 ≈ 1.10, so the model barely moved off that. It didn't even fit
+  the 160 posts it trained on, and validation accuracy sat at 0.457 or 0.486
+  (the majority share) after every epoch.
+- **The arithmetic.** 160 training posts ÷ batch 16 × 3 epochs = **30
+  optimizer steps** at lr 2e-5. That's very little for a freshly initialized
+  classification head. This is the rare case where the diagnosis points at a
+  training setting, which is why the improvement below changes epochs and not
+  labels.
+- **Ruling out the labels.** If my `backed`/`bare_take` line were applied
+  inconsistently, I'd expect errors in *both* directions on that pair, and
+  some `backed` predictions. Instead there are no predictions of `backed` or
+  `reaction` to be wrong in the first place. The agreement check is the
+  direct test of my labeling consistency. I matched staff on all 30 posts,
+  including all 7 that staff marked as hard, and 3 of those 7 are exactly
+  the "does the fact carry the argument?" call that my own `backed`/`bare_take`
+  rule is built on (sp_005, sp_010, sp_014). So there's no sign I apply that
+  kind of rule two ways, and nothing in my labeling could explain a model that
+  predicts one label for everything.
+
+`reaction` being my thinnest label (36 training posts) isn't the cause of the
+*before* miss either: `backed` has 53 training posts and was predicted just
+once. Thinness matters later, though. See The Improvement, where `reaction`
+is the label still failing once training is fixed.
 
 ---
 
@@ -461,7 +575,12 @@ the notebook. The two moments below are where using it changed my decisions.
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 30 / 30 = 100%
+
+My 30 labels are in `my_staff_labels.csv`, made under `data/staff_taxonomy.md`
+before I had seen any staff label. They were pre-labeled by Claude, blind, and
+then checked by me (see How I Used AI). Staff's labels are in
+`data/staff_labels.csv`; the result is in `agreement_results.json`.
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
@@ -483,23 +602,38 @@ the notebook. The two moments below are where using it changed my decisions.
      written rule two different ways on 30 posts, that is direct evidence about
      what you did across your own 200. -->
 
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+**None.** `agreement.py` found 0 disagreements, so there's nothing to sort
+into piles (a), (b) or (c). Instead, here are the 7 posts staff marked as hard
+(`borderline = yes` in their file), with the rule both of us applied:
 
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
+| Post | Both said | The rule that decided it |
+|---|---|---|
+| sp_005 "Carbon plates aren't the whole story. My times dropped 2%…" | `analysis` | Rule 1. The opening clause reads like a hot take, but the two comparable 2% drops are the reason for the conclusion. |
+| sp_010 "Three of us ran the same session… within 10 seconds" | `analysis` | Rule 1. A tiny, hedged sample, but the checkable observation is what the claim rests on. |
+| sp_014 "Times are down about 3%… so obviously the shoes are the whole story" | `hot_take` | Rule 1's own example. The 3% decorates a conclusion already reached; "so obviously" does the work. |
+| sp_019 "Nobody actually enjoys the long run…" | `hot_take` | Rule 2. It sounds reflective, but it's a general claim about everyone, not a report of the writer's run. |
+| sp_020 "Every injury thread on this forum is the same injury…" | `hot_take` | Rule 1. Checkable in principle, but no count is given: asserted, not shown. |
+| sp_028 "Third DNF this year…" | `reaction` | Rule 3 doesn't apply. "Third" is countable, but nothing is argued from it. |
+| sp_029 "Just realised the shoes I set every PB in… wrong size" | `reaction` | Rule 2. A wry shoe observation, but it reports the writer's own realisation, now. |
+
+**What the pattern in my disagreements tells me:** there's no disagreement
+to find a pattern in, so the useful questions are whether the set was easy
+and what a perfect score proves.
+
+- **The set was easier than its hard cases suggest.** The posts are grouped
+  by label in id order (sp_001–010 are all `analysis`, 011–020 `hot_take`,
+  021–030 `reaction`), and most of each group is a clear example. My target
+  of 21/30 was set for a set I expected to be messier. A 0.90 target (27/30)
+  would have been a real test on this set.
+- **It's good evidence on the boundary my model gets wrong *before* the
+  fix, and weak evidence on the one it gets wrong *after*.** The rule-1 cases
+  (sp_005, 010, 014, 020) are the same call as my `backed`/`bare_take` line,
+  and I made all of them the staff's way. But the staff `reaction` is defined
+  by *recency and the writer's own experience*, while mine is "no arguable
+  claim once you strip the joke". The staff set has no sarcastic jabs about a
+  company, which is where my `reaction`/`bare_take` line is hardest. So 30/30
+  can't tell me whether I applied *my* `reaction` rule consistently across my
+  230 r/Games posts. That's the question left open in What's Still Broken.
 
 **What the pattern in my disagreements tells me:**
 
@@ -509,24 +643,87 @@ the notebook. The two moments below are where using it changed my decisions.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** `EPOCHS = 3` → `EPOCHS = 10` in notebook section 2. One
+change only: same labels, same learning rate, batch size and max length, and
+the same seeds 42, 7 and 2024. I picked 10 before running anything and didn't
+try other values, so the after numbers aren't tuned against the test splits.
 
-**Which diagnosis pointed at it:**
+**Which diagnosis pointed at it:** criteria 1 and 2. The before model ended
+training with a loss of 1.01–1.04, against ln 3 ≈ 1.10 for knowing nothing,
+after only 30 optimizer steps, and it predicted `bare_take` for 34–35 of 35
+posts. A model that hasn't fit its own training set needs more training
+before relabeling or more data can show up in the numbers. Ten epochs is 100
+steps. Training loss now ends at 0.69 / 0.72 / 0.73.
 
 ### Run Log — After
 
+**Device:** `mps`, as before (`results_three_seeds_after.json`).
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.62 in every seed | 0.714 | 0.571 | 0.657 | MISSED |
+| 2. Lowest per-label F1 | ≥ 0.45 in every seed | 0.667 (`backed`) | 0.000 (`reaction`) | 0.400 (`reaction`) | MISSED |
+| 3. Trained − baseline accuracy | ≥ +0.10 (seed 42) | +0.371 (0.714 − 0.343) | +0.257 (0.571 − 0.314) | +0.343 (0.657 − 0.314) | MET |
+| 4. Agreement with staff set | ≥ 21/30 (0.70) | 30/30 (1.00) | — unchanged by retraining | — | MET |
+| 5. Most-sure − least-sure third accuracy | ≥ 0.15 in every seed | +0.091 (0.909 − 0.818) | +0.273 (0.818 − 0.545) | +0.273 (0.909 − 0.636) | MISSED |
 
-**Did it help, and how do I know:**
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.714 | 0.571 | 0.657 | 0.143 |
+| Macro F1 | 0.721 | 0.428 | 0.595 | 0.293 |
+| F1 — `backed` | 0.667 | 0.632 | 0.667 | 0.035 |
+| F1 — `bare_take` | 0.727 | 0.651 | 0.718 | 0.076 |
+| F1 — `reaction` | 0.769 | 0.000 | 0.400 | 0.769 |
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
+Confusion matrices after, all three seeds:
+
+| Seed 42: true \ predicted | backed | bare_take | reaction |
+|---|---|---|---|
+| **backed** | 8 | 3 | 0 |
+| **bare_take** | 4 | 12 | 0 |
+| **reaction** | 1 | 2 | 5 |
+
+| Seed 7: true \ predicted | backed | bare_take | reaction |
+|---|---|---|---|
+| **backed** | 6 | 5 | 0 |
+| **bare_take** | 2 | 14 | 0 |
+| **reaction** | 0 | 8 | 0 |
+
+| Seed 2024: true \ predicted | backed | bare_take | reaction |
+|---|---|---|---|
+| **backed** | 7 | 4 | 0 |
+| **bare_take** | 2 | 14 | 0 |
+| **reaction** | 1 | 5 | 2 |
+
+**Did it help, and how do I know:** Yes for what it targeted, and the
+criteria verdicts barely moved. Before and after are on the same three splits:
+
+| | Before (3 epochs) | After (10 epochs) |
+|---|---|---|
+| Accuracy, seeds 42 / 7 / 2024 | 0.486 / 0.486 / 0.457 | 0.714 / 0.571 / 0.657 |
+| Macro F1, seeds 42 / 7 / 2024 | 0.269 / 0.269 / 0.209 | 0.721 / 0.428 / 0.595 |
+| `backed` F1, mean of 3 | 0.111 | 0.655 |
+| `reaction` F1, mean of 3 | 0.000 | 0.390 |
+| Criteria MET / MISSED | 3 / 2 | 2 / 3 |
+
+The model now learns the `backed`/`bare_take` boundary. `backed` F1 rose from
+0.111 to 0.655 on average and is steady across seeds (spread 0.035). Its errors
+go both ways (12 one way, 8 the other across seeds), which is what a genuinely hard pair looks like,
+not a lopsided labeling problem. Two seeds now clear the 0.62 accuracy target,
+but seed 7 (0.571) doesn't, so criterion 1 is still a miss.
+
+What got worse: **criterion 5 went from MET to MISSED**, because seed 42's gap
+is +0.091. That's not the model's confidence getting less useful: the
+least-sure third went from 0.182 to 0.818 accuracy. With 11 posts per third,
+one post is 0.091. When overall accuracy is 0.71, both thirds sit near the
+ceiling, and there's no room for a 0.15 gap. I'm leaving the target where it
+is. It measured the right thing, and I missed it on one seed.
+
+The other new finding is stability. Accuracy now spreads 0.143 across seeds,
+over the 10-point line, and `reaction` F1 ranges from 0.000 to 0.769. On 8
+test posts per seed, `reaction` can't be measured stably. That's a real
+diagnosis about the dataset's size, and it's the reason seed 7 fails both
+criteria 1 and 2.
 
 
 
@@ -536,12 +733,42 @@ the notebook. The two moments below are where using it changed my decisions.
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+After the improvement, three criteria are still missed (1, 2 and 5). Criteria
+3 and 4 are met.
 
+- **Criterion 2: `reaction` F1 0.000 / 0.400 on seeds 7 and 2024.** Across
+  the three after-seeds, **15 of 24** real `reaction` posts were called
+  `bare_take` and **0** `bare_take` posts were called `reaction`. That's
+  lopsided, unlike the `backed`/`bare_take` pair. Two causes fit:
+  `reaction` is my thinnest label (36 training posts, 52 total), and my own
+  `bare_take` definition pulls jabs toward it ("sarcasm whose point is a clear
+  verdict"). What I'd do next is add 30 more `reaction` posts, labeled under
+  the same rule. Before that I'd re-read my 52 existing `reaction` labels
+  against the "strip the joke, is an arguable claim left?" test, because
+  rows 159–230 were never hand-checked. The agreement check can't settle
+  which comes first: I matched staff 30/30, but their `reaction` rule is
+  about recency, not my "no arguable claim" test, so it never tested my
+  hardest `reaction` calls. I stopped because the unit allows one improvement, and the
+  one the before-diagnosis pointed at was training.
+- **Criterion 1: seed 7 accuracy 0.571.** Seed 7 gets 15 of 35 posts wrong,
+  and 8 of those are its `reaction` posts, every one called `bare_take`. Two
+  more right answers would clear 0.62, so this is mostly the same `reaction`
+  problem, and the same fix applies.
+- **Criterion 5: seed 42 gap +0.091.** I'd leave it. It's a ceiling effect on
+  11-post thirds (above), and a bigger test split would show whether it's
+  real. That needs more data overall, which is the same next step.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
 
+I meant `reaction` to mean "no arguable claim left once you strip the joke",
+but the model learned something closer to "short and opinionated-sounding
+means `bare_take`": 15 of 24 real `reaction` posts went to `bare_take`
+across the after-seeds, and none went the other way. The `backed` line it did
+learn, roughly the way I meant it, with errors in both directions on that
+pair (12 `backed` called `bare_take` and 8 `bare_take` called `backed` across
+three seeds) rather than a one-way slide.
 
 
 <!-- ═════════════════════════════════════════════════════════════════════
