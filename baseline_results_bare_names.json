@@ -1,0 +1,209 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 35,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": false,
+  "scores": {
+    "n": 35,
+    "accuracy": 0.2857142857142857,
+    "f1_macro": 0.2730321113952828,
+    "per_label": {
+      "backed": {
+        "precision": 0.4166666666666667,
+        "recall": 0.45454545454545453,
+        "f1": 0.43478260869565216,
+        "support": 11
+      },
+      "bare_take": {
+        "precision": 1.0,
+        "recall": 0.0625,
+        "f1": 0.11764705882352941,
+        "support": 16
+      },
+      "reaction": {
+        "precision": 0.18181818181818182,
+        "recall": 0.5,
+        "f1": 0.26666666666666666,
+        "support": 8
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "I don\u2019t get why any games make the video game character look like the mocap actor. You\u2019re a video game, make them look like whatever the hell you want, that\u2019s the advantage of your art vs a movie or TV show. \n\nThe craziest was MJ in Spiderman 2 where they changed what the character looked like because the real life actress was in a car accident or something. How does that make any sense to do??",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I was hesitant about getting a series X on day one for $500. Little did I know i was saving hundreds by getting it.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "It might be the video but I think it's more likely they have a really bad TAA implementation. It's the exact same blurriness that RDR2 has. On PC it's fixed with mods or DLSS but consoles still suffer from the same shit",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "where's my 200k+ salary for dropping balls all day and only doing enough work to get a deflated non functioning ball out the door once every 8 years or so.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I\u2019m surprised no one has ever talked about this, but this is extremely common for sports games. They all get delisted after only two or three years. \n\nThe only way to play old sports games is to hit up a game store and see if you can find one in the bargain bin, they\u2019re usually sold for wayyyy too much money online. It\u2019s really really fucking scummy especially now that we\u2019re reaching the no physical copies era of games.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Halo as a franchise used to be known for high-quality cinematics, and literally every Halo game [all the way back to Combat Evolved](https://en.wikipedia.org/wiki/Joseph_Staten) has had a director of cinematics working on it.\n\nThe guy who just got laid off apparently wasn't a great cinematic director, but simply having a cinematic director has nothing to do with games being bad or \"bloated\" now.",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Sony restocked these today at 11am at MSRP on Playstation Direct!   \n  \nSo there is still hope for people that haven't been able to get one and don't want to pay that 1400$ scalper mark up.\n\nHold the line guys",
+      "gold": "backed",
+      "predicted": "backed"
+    },
+    {
+      "text": "There's literally a crap ton of pegi 18 games.\n\nAll Call of Duty games are Pegi 18.  \n\nOf the recent games Blood of Dawnwalker, Onimusha and Gears E- Day are all Pegi 18.",
+      "gold": "backed",
+      "predicted": "backed"
+    },
+    {
+      "text": "Sports games are the ideal genre for GaaS.  imagine you could download the NBA 2K app on your console and they offer a free mode as a trial (exhibition mode). Then for like $5 a month/60 a year you can unlock the rest of the game.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Genuinely the most boring scifi environment I've ever played in. Even exploring barren moon #37,526 to look for ancient alien remnants in Elite Dangerous is so exciting in comparison.",
+      "gold": "bare_take",
+      "predicted": "backed"
+    },
+    {
+      "text": "This could have some fun role playing possibilities, especially when remembering that the game has a criminal profile meter\n\nSo you could be a total junkie making shitty scores or a professional criminal, maybe Jason could be one and Lucia the other",
+      "gold": "backed",
+      "predicted": "backed"
+    },
+    {
+      "text": "I always felt the expansions *after* Cataclysm felt disconnected from the world of Azeroth. Ok, Outland wasn't a good one in that regard, but one such \"outzone\" is acceptable I guess. Northrend and Dalaran were a bit disconnected too, but you venture around them *in* Azeroth. Also, it helps that the big baddies were Illidan and Arthas.\n\nI hope they keep Forever strictly in Azeroth so that the capital cities stay as the hubs and all level player characters keep coming together and keep seeing each other while adventuring.",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Well we're talking about games with two very different approaches. GTA 5 is largely a satire of American culture, RDR 2 is a period drama. The goal isn't the same, so the style is going to differ. Again, compare it to GTA 4 which had a much more serious tone (but still following in the satirical nature of GTA as a series). It's entirely dependent on what the purpose of the story is, I don't think one way is necessarily right or wrong.",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "It\u2019s not a clarification, I don\u2019t understand why you think fitness or working out as a hobby has a price floor, because it doesn\u2019t. You don\u2019t need a gym membership or fancy equipment to start working out, body weight exercises are plenty. \n\nEven just getting a cheap gym membership gets you like 80% of the way there in terms of what monetary investment is needed to maximize the hobby. It\u2019s a ridiculous notion that fitness is expensive, unless you actively try to make it expensive.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Agree, I don\u2019t think any major Western AAA game has ever had a romance this critical to the story.\u00a0\n\nThere are the big RPGs but the current and previous generation is largely the kind of three cutscenes and a sex scene wish fulfillment that has barely advanced since Mass Effect 1. The Witcher 3 had a pleasant through-line with the Yennefer romance but I think that was driven by strong book characterization. There was Nate and Elena in Uncharted but again I think it was more of a side plot even in the fourth game other than at the beginning and end.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "The truth is it's very hit and miss. I was using the Steroids in Duke Nukem forever though I think the differences there was that they were more or less items you used from the inventory that doesn't have much of an on-screen animation.\n\nDisco Elysium was briefly banned also, though it was later argued that the drug and alcohol use directly resulted in a negative narrative impact to Harry, which allowed to to be overturned (Not making this up \ud83d\ude05)\n\nI'm not totally familiar with Saints Row but according to google the drug that gives you a buff was apparently removed in our version. Huh, I didn't even know about that one.",
+      "gold": "backed",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Enjoy, it's a wonderful experience!",
+      "gold": "reaction",
+      "predicted": "backed"
+    },
+    {
+      "text": "Honestly, I miss upgrading my PC. Being an enthusiast was fun. Every few years I'd get a growing itch. I enjoyed reading about GPU performance. Looking for the best bang-for-my-budget options. Deciding every few years if I genuinely card about this upgrade cycle or if my components were still good enough.\n\nI never thought I'd miss the FOMO, but when components are at the \"I need to seriously weigh this purchase against the value of other significant expenses\" this turns from a fun hobby into what starts to feel more like an addiction I need to kick.\n\nI was never in the market for a 5090 at launch, but at that point I was thinking \"I could just wait a few years or maybe wait for the price of a 5080 to drop\" and now it looks like the 4070Ti I'm running might legitimately be the last and only graphics card I buy this decade, and maybe for the rest of my life. We're palying by completely different rules now and I don't like it.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I briefly worked in the office that also made Nuts magazine. You'd see in the open plan office, tits being photoshopped by a 40 year old woman who had mentally checked out a decade earlier.",
+      "gold": "reaction",
+      "predicted": "backed"
+    },
+    {
+      "text": "3070 should play the game with some upscaling for sure.",
+      "gold": "bare_take",
+      "predicted": "backed"
+    },
+    {
+      "text": "Frankly, I just don't think they know how to make a good game anymore.\n\nThey know that if they screw up TES:VI, a lot of people will write them off for good.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "It's weird to me that no one in this thread seems to have mentioned \"The Legend of California\"... seeing as that's the game that Jeff is trying to release and probably his whole reason for engaging with the media right now. I only just heard of it and I'm thinking... wow, that name is horrible. No one is going to feel even an ounce of excitement or intrigue hearing that title.\n\nIt looks like a fairly bog standard survival crafty game by the looks of it. Doesn't seem to have a lot of discussion going on in its Steam discussions board. I guess I can see why he's feeling humbled by the whole thing... I don't think he knew how to promote it.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "\"My favourite game from Amanita and the first game I played on Steam is getting a sequel\" was not on my bingo card but man, I'm *so* happy this is happening.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "There's a lot of anti-weebs on the Forza community that for whatever reason don't understand that having an Anime girl decal on your car is literally part of the culture.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Yeah seriously my knees hurt these days",
+      "gold": "reaction",
+      "predicted": "backed"
+    },
+    {
+      "text": "Damn. I feel obligated to get this. I played the first game after winning it from TotalBiscuit. It wad a fun game too.",
+      "gold": "reaction",
+      "predicted": "backed"
+    },
+    {
+      "text": "There is no point in developing a third IP with how long these games take nowadays. If they just alternate between Fallout and Elder Scrolls we will get one of each every ten years.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I have a story about this. I have no proof of this so you\u2019re gonna have to take this for what it is, a dumb ass on the internet posting something without evidence. But in uni I was friends with a guy who was related to someone high up at Rockstar Leeds. We were studying games and animation and once or twice we met up with him so he could give us advice and things. He was working on GTA Chinatown Wars at the time and he said that the game at one point contained a minigame where you snorted coke off the touch screen using stylus as a rolled up bank note. The minigame got removed because either Nintendo wouldn\u2019t allow it, they expected Nintendo wouldn\u2019t allow it, or just generally someone wouldn\u2019t allow it. \n\nThats my completely unsubstantiated GTA trivia. Make of it what you will, because I\u2019ve got no way to prove it.",
+      "gold": "bare_take",
+      "predicted": "bare_take"
+    },
+    {
+      "text": "Fuck 2K really, I haven't bought a 2K game in ages and I won't start any time soon. They are easily Ubisoft tier.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Hate seeing layoffs but if any team deserved to be nuked from orbit it\u2019s this one. How do you fuck up Halo like 4 times? Bungie literally laid the groundwork and provided a template and they still couldn\u2019t do it. On top of that, they had an extremely antagonistic relationship with Halo fans, even though their studio essentially shipped zero games worth playing in a decade and a half\u2026 culminating in a remake of a game from 2001 that shipped with LESS FEATURES. \n\nAt some point you have to pull the plug. \n\nGo work on Candy Crush or something man.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Microsoft don\u2019t take a cut of sales on Windows. They do on Xbox.",
+      "gold": "backed",
+      "predicted": "backed"
+    },
+    {
+      "text": ">\u201cEven with the size of the team that we had for Starfield, it wasn\u2019t big enough to create the amount of content that the grand idea of the game really required,\u201d he explained. \u201cLike, we needed way more.\u201d\n\nI really dont think this was the games problem. Yes it needed more \"points of interest\" generated on a planet. But the fundamental structure was screwed up. They should have made a handful of large handcrafted maps on different worlds, then maybe a few dozen small ones you'd go to for missions. Bethesda keeps moving forward with more procedural generation on their games and its hurting what used to make their games special.\n\nIf starfield 2 was still going to have 1000 procgen planets with nothing to do on them it would also be a disappointment. I mostly enjoyed playing starfield but its bizarre listening to some of these ex-employees not understanding what players disliked about the game.",
+      "gold": "bare_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Fuckin Roos and drop bears stealing all the coke from hard working Aussies",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I don't think they'll quit per se. I expect their future products will be stuff like RTX Spark, aimed at workstation consumers, which also happens to be good at running games. Unfortunately prices will keep these products out of most enthusiasts' hands for the foreseeable future.",
+      "gold": "bare_take",
+      "predicted": "backed"
+    },
+    {
+      "text": "This makes it the fastest selling Remedy game ever btw. It's great news. Remedy makes weird AA games, which isn't for everyone, but they still seem to be growing.",
+      "gold": "backed",
+      "predicted": "backed"
+    }
+  ]
+}
